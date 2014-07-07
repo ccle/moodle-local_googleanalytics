@@ -66,7 +66,7 @@ function ga_trackurl() {
 
 function ga_key() {
     $configs = get_config('local_googleanalytics');
-    if (!$configs->enabled || empty($configs->gakey)) {
+    if (empty($configs->enabled) || empty($configs->gakey)) {
         return false;
     } else {
         return $configs->gakey;
