@@ -29,16 +29,27 @@
  */
 
 function ga_trackurl() {
-    global $CFG, $DB, $PAGE, $COURSE, $OUTPUT;
+    global $CFG, $DB, $PAGE, $COURSE;
 
+    // If no context is set yet then will show debugging message and return
+    // system context/$FULLME url. Supress debugging message.
+    $olddebug = $CFG->debug;
+    $CFG->debug = DEBUG_NONE;
     $pageinfo = get_context_info_array($PAGE->context->id);
+
 
     $trackurl = array();
 
     // Logging full URLs if not in a course site.
     if ($COURSE->id == SITEID) {
-        return $PAGE->url->out_as_local_url();;
+        $url = $PAGE->url;
+        // Return debugging to previous value.
+        $CFG->debug = $olddebug;
+        return $url->out_as_local_url();
     }
+
+    // Return debugging to previous value.
+    $CFG->debug = $olddebug;
 
     // Adds course category name.
     if (isset($pageinfo[1]->category)) {
